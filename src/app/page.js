@@ -125,55 +125,55 @@ export default function Home() {
           <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
             5-Star Certified Partner
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-neutral-900">
-            Empower Your Business <br/> with <span className="text-blue-600">TallyPrime</span>
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50">
+            Empower Your Business <br/> with <span className="text-blue-600 dark:text-blue-400">TallyPrime</span>
           </h1>
-          <p className="text-lg md:text-xl text-neutral-500 max-w-2xl">
+          <p className="text-lg md:text-xl text-neutral-500 dark:text-neutral-400 max-w-2xl">
             Expert sales, seamless cloud integration, tailored customization, and dedicated support to scale your enterprise.
           </p>
           <div className="flex gap-4 pt-4">
-            <Button size="lg" className="rounded-full px-8 bg-blue-600 hover:bg-blue-700">Explore Services</Button>
-            <Button size="lg" variant="outline" className="rounded-full px-8">Contact Sales</Button>
+            <Button size="lg" className="rounded-full px-8 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 dark:text-white">Explore Services</Button>
+            <Button size="lg" variant="outline" className="rounded-full px-8 dark:border-neutral-700 dark:hover:bg-neutral-800">Contact Sales</Button>
           </div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section id="about" className="w-full py-20 bg-neutral-50 border-y">
+      <section id="about" className="w-full py-20 bg-neutral-50 dark:bg-neutral-900/50 border-y dark:border-neutral-800">
         <div className="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           <div className="flex flex-col items-center space-y-2">
-            <h3 className="text-4xl font-bold text-blue-600">
+            <h3 className="text-4xl font-bold text-blue-600 dark:text-blue-400">
               <NumberTicker value={20} />+
             </h3>
-            <p className="text-sm font-medium text-neutral-500 uppercase tracking-wider">Years Experience</p>
+            <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">Years Experience</p>
           </div>
           <div className="flex flex-col items-center space-y-2">
-            <h3 className="text-4xl font-bold text-blue-600">
+            <h3 className="text-4xl font-bold text-blue-600 dark:text-blue-400">
               <NumberTicker value={2500} />+
             </h3>
-            <p className="text-sm font-medium text-neutral-500 uppercase tracking-wider">Happy Clients</p>
+            <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">Happy Clients</p>
           </div>
           <div className="flex flex-col items-center space-y-2">
-            <h3 className="text-4xl font-bold text-blue-600">
+            <h3 className="text-4xl font-bold text-blue-600 dark:text-blue-400">
               <NumberTicker value={150} />+
             </h3>
-            <p className="text-sm font-medium text-neutral-500 uppercase tracking-wider">Customizations</p>
+            <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">Customizations</p>
           </div>
           <div className="flex flex-col items-center space-y-2">
-            <h3 className="text-4xl font-bold text-blue-600">
+            <h3 className="text-4xl font-bold text-blue-600 dark:text-blue-400">
               <NumberTicker value={24} />/7
             </h3>
-            <p className="text-sm font-medium text-neutral-500 uppercase tracking-wider">Support</p>
+            <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">Support</p>
           </div>
         </div>
       </section>
 
       {/* Services Section */}
-      <section id="services" className="w-full py-24 px-4 bg-white" ref={servicesRef}>
+      <section id="services" className="w-full py-24 px-4 bg-white dark:bg-background" ref={servicesRef}>
         <div className="max-w-6xl mx-auto space-y-12">
           <div className="text-center space-y-4">
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight">Our Premium Services</h2>
-            <p className="text-neutral-500 max-w-2xl mx-auto">From procurement to implementation, we handle your end-to-step business accounting needs.</p>
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50">Our Premium Services</h2>
+            <p className="text-neutral-500 dark:text-neutral-400 max-w-2xl mx-auto">From procurement to implementation, we handle your end-to-step business accounting needs.</p>
           </div>
           <BentoGrid className="max-w-4xl mx-auto">
             {services.map((item, i) => (
@@ -191,25 +191,25 @@ export default function Home() {
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="w-full py-24 bg-neutral-50 overflow-hidden flex flex-col items-center">
+      <section id="testimonials" className="w-full py-24 bg-neutral-50 dark:bg-neutral-900/50 overflow-hidden flex flex-col items-center">
         <div className="text-center space-y-4 mb-12">
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight">Trusted by Industry Leaders</h2>
-          <p className="text-neutral-500 max-w-2xl mx-auto">Hear from our clients who have transformed their accounting with us.</p>
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50">Trusted by Industry Leaders</h2>
+          <p className="text-neutral-500 dark:text-neutral-400 max-w-2xl mx-auto">Hear from our clients who have transformed their accounting with us.</p>
         </div>
         <div className="relative flex w-full max-w-[100vw] flex-col items-center justify-center overflow-hidden">
           <Marquee pauseOnHover className="[--duration:20s]">
             {reviews.map((review, i) => (
-              <div key={i} className="mx-4 flex w-72 flex-col gap-4 rounded-xl border bg-white p-6 shadow-sm">
+              <div key={i} className="mx-4 flex w-72 flex-col gap-4 rounded-xl border dark:border-neutral-800 bg-white dark:bg-neutral-900 p-6 shadow-sm">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-600 font-bold">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold">
                     {review.name.charAt(0)}
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-sm font-semibold">{review.name}</span>
+                    <span className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">{review.name}</span>
                     <span className="text-xs text-neutral-400">Verified Client</span>
                   </div>
                 </div>
-                <p className="text-sm text-neutral-600">{review.body}</p>
+                <p className="text-sm text-neutral-600 dark:text-neutral-400">{review.body}</p>
               </div>
             ))}
           </Marquee>
