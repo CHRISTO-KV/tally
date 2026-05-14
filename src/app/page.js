@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import AnimatedGridPattern from "@/components/ui/animated-grid-pattern";
 import Marquee from "@/components/ui/marquee";
 import NumberTicker from "@/components/ui/number-ticker";
@@ -70,6 +73,11 @@ const products = [
     icon: Calculator,
     accent: "text-blue-600 bg-blue-50 dark:bg-blue-950/40 dark:text-blue-300",
     points: ["1 active user", "GST reports", "Invoice automation"],
+    prices: {
+      perpetual: "₹22,500",
+      rental: "₹750/mo",
+    },
+    tag: "Most Popular for Small Business",
   },
   {
     name: "TallyPrime Gold",
@@ -77,6 +85,11 @@ const products = [
     icon: Users,
     accent: "text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 dark:text-emerald-300",
     points: ["Unlimited LAN users", "Role-based access", "Branch workflows"],
+    prices: {
+      perpetual: "₹67,500",
+      rental: "₹2,250/mo",
+    },
+    tag: "Best for Growing Teams",
   },
   {
     name: "TallyPrime Server",
@@ -84,6 +97,10 @@ const products = [
     icon: DatabaseZap,
     accent: "text-amber-600 bg-amber-50 dark:bg-amber-950/40 dark:text-amber-300",
     points: ["Fast reports", "Data monitoring", "Secure administration"],
+    prices: {
+      perpetual: "₹2,70,000",
+      rental: "Custom",
+    },
   },
   {
     name: "Tally on Cloud",
@@ -91,6 +108,10 @@ const products = [
     icon: Cloud,
     accent: "text-cyan-600 bg-cyan-50 dark:bg-cyan-950/40 dark:text-cyan-300",
     points: ["Remote access", "Daily backups", "Team permissions"],
+    prices: {
+      perpetual: "₹6,000/yr",
+      rental: "₹600/mo",
+    },
   },
   {
     name: "TSS Renewal",
@@ -98,6 +119,10 @@ const products = [
     icon: RefreshCcw,
     accent: "text-rose-600 bg-rose-50 dark:bg-rose-950/40 dark:text-rose-300",
     points: ["Latest releases", "Connected GST", "Priority assistance"],
+    prices: {
+      perpetual: "₹4,500/yr",
+      rental: "N/A",
+    },
   },
   {
     name: "Mobile & BI Add-ons",
@@ -105,6 +130,10 @@ const products = [
     icon: MonitorSmartphone,
     accent: "text-violet-600 bg-violet-50 dark:bg-violet-950/40 dark:text-violet-300",
     points: ["Live KPIs", "Approvals", "Sales visibility"],
+    prices: {
+      perpetual: "₹1,800/yr",
+      rental: "₹180/mo",
+    },
   },
 ];
 
@@ -303,8 +332,8 @@ function HeroDashboard() {
           <ShieldCheck className="h-4 w-4 text-emerald-500" />
           GST Ready
         </div>
-        <div className="h-2 rounded-lg bg-neutral-100 dark:bg-neutral-800">
-          <div className="h-2 w-[92%] rounded-lg bg-emerald-500" />
+        <div className="h-2 rounded-full bg-emerald-100 dark:bg-emerald-950/50">
+          <div className="h-2 w-full rounded-full bg-emerald-500" />
         </div>
       </div>
       <div className="absolute -right-4 bottom-14 hidden w-36 rounded-lg border border-amber-200 bg-white p-3 shadow-xl shadow-amber-900/10 dark:border-amber-500/20 dark:bg-neutral-950 sm:block">
@@ -517,6 +546,8 @@ function CTAButton({ href, children, variant = "primary" }) {
 }
 
 export default function Home() {
+  const [billingCycle, setBillingCycle] = useState("perpetual"); // "perpetual" or "rental"
+
   return (
     <main className="relative min-h-screen overflow-hidden bg-white text-neutral-950 dark:bg-neutral-950 dark:text-white">
       <header className="fixed inset-x-0 top-0 z-50 border-b border-neutral-200 bg-white/90 backdrop-blur-xl dark:border-neutral-800 dark:bg-neutral-950/90">
@@ -628,24 +659,97 @@ export default function Home() {
             title="Choose the right Tally stack before you scale."
             description="From a single accountant to multi-branch teams, every setup includes practical guidance, clean configuration, and support that understands real business operations."
           />
-          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          <div className="flex flex-col items-center gap-6">
+            <div className="inline-flex items-center rounded-full border border-neutral-200 bg-neutral-50 p-1 dark:border-neutral-800 dark:bg-neutral-900">
+              <button
+                onClick={() => setBillingCycle("perpetual")}
+                className={cn(
+                  "rounded-full px-6 py-2 text-sm font-bold transition-all",
+                  billingCycle === "perpetual"
+                    ? "bg-blue-600 text-white shadow-md"
+                    : "text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white"
+                )}
+              >
+                Perpetual License
+              </button>
+              <button
+                onClick={() => setBillingCycle("rental")}
+                className={cn(
+                  "rounded-full px-6 py-2 text-sm font-bold transition-all",
+                  billingCycle === "rental"
+                    ? "bg-blue-600 text-white shadow-md"
+                    : "text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white"
+                )}
+              >
+                Rental / Monthly
+              </button>
+            </div>
+            <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400">
+              {billingCycle === "perpetual" 
+                ? "One-time payment for lifetime usage with 1 year TSS." 
+                : "Flexible monthly payments for growing businesses."}
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {products.map((product) => {
               const Icon = product.icon;
+              const price = product.prices[billingCycle];
+              
+              if (price === "N/A" && billingCycle === "rental") return null;
+
               return (
-                <article key={product.name} className="group rounded-lg border border-neutral-200 bg-white p-6 shadow-sm transition-colors hover:border-blue-300 dark:border-neutral-800 dark:bg-neutral-950 dark:hover:border-cyan-600/50">
-                  <div className={cn("mb-5 flex h-12 w-12 items-center justify-center rounded-lg", product.accent)}>
-                    <Icon className="h-6 w-6" />
+                <article 
+                  key={product.name} 
+                  className={cn(
+                    "group relative flex flex-col rounded-2xl border border-neutral-200 bg-white p-8 shadow-sm transition-all hover:shadow-xl hover:-translate-y-1 dark:border-neutral-800 dark:bg-neutral-950",
+                    product.tag && "border-blue-200 dark:border-blue-900/50 ring-1 ring-blue-100 dark:ring-blue-900/20"
+                  )}
+                >
+                  {product.tag && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-blue-600 px-4 py-1 text-[10px] font-black uppercase tracking-wider text-white">
+                      {product.tag}
+                    </div>
+                  )}
+                  
+                  <div className="flex items-center justify-between">
+                    <div className={cn("flex h-14 w-14 items-center justify-center rounded-2xl shadow-inner", product.accent)}>
+                      <Icon className="h-7 w-7" />
+                    </div>
+                    <div className="text-right">
+                      <div className="text-2xl font-black text-neutral-950 dark:text-white">
+                        {price}
+                      </div>
+                      <div className="text-[10px] font-bold uppercase text-neutral-500 dark:text-neutral-400">
+                        {price === "Custom" ? "Contact for Quote" : (billingCycle === "perpetual" ? "+ 18% GST" : "Incl. Support")}
+                      </div>
+                    </div>
                   </div>
-                  <h3 className="text-xl font-bold text-neutral-950 dark:text-white">{product.name}</h3>
-                  <p className="mt-3 leading-7 text-neutral-600 dark:text-neutral-300">{product.description}</p>
-                  <ul className="mt-5 space-y-3">
+
+                  <div className="mt-8">
+                    <h3 className="text-xl font-bold text-neutral-950 dark:text-white">{product.name}</h3>
+                    <p className="mt-3 min-h-[84px] text-sm leading-6 text-neutral-600 dark:text-neutral-300">{product.description}</p>
+                  </div>
+
+                  <ul className="mt-8 flex-1 space-y-4">
                     {product.points.map((point) => (
-                      <li key={point} className="flex items-center gap-2 text-sm font-semibold text-neutral-700 dark:text-neutral-200">
-                        <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-                        {point}
+                      <li key={point} className="flex items-start gap-3 text-sm font-semibold text-neutral-700 dark:text-neutral-200">
+                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
+                        <span>{point}</span>
                       </li>
                     ))}
                   </ul>
+
+                  <div className="mt-8 pt-8 border-t border-neutral-100 dark:border-neutral-800">
+                    <button className={cn(
+                      "w-full rounded-xl py-3 text-sm font-black transition-all",
+                      product.tag 
+                        ? "bg-blue-600 text-white shadow-lg shadow-blue-600/20 hover:bg-blue-700" 
+                        : "bg-neutral-100 text-neutral-950 hover:bg-neutral-200 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
+                    )}>
+                      {price === "Custom" ? "Contact Sales" : "Get Started"}
+                    </button>
+                  </div>
                 </article>
               );
             })}
