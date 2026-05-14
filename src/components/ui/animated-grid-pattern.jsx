@@ -19,49 +19,60 @@ export default function AnimatedGridPattern({
 }) {
   const id = useId();
   const containerRef = useRef(null);
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-
-  useEffect(() => {
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (let entry of entries) {
-        setDimensions({
-          width: entry.contentRect.width,
-          height: entry.contentRect.height,
-        });
-      }
-    });
-
-    if (containerRef.current) {
-      resizeObserver.observe(containerRef.current);
-    }
-
-    return () => {
-      if (containerRef.current) {
-        resizeObserver.unobserve(containerRef.current);
-      }
-    };
-  }, [containerRef]);
-
-  const [squares, setSquares] = useState(() => {
-    return Array.from({ length: numSquares }, (_, i) => ({
+  const dimensionsRef = useRef({ width: 0, height: 0 });
+  const [squares, setSquares] = useState(() =>
+    Array.from({ length: numSquares }, (_, i) => ({
       id: i,
       pos: [0, 0],
-    }));
-  });
+    }))
+  );
 
   useEffect(() => {
-    if (dimensions.width && dimensions.height) {
+    const element = containerRef.current;
+    if (!element) {
+      return undefined;
+    }
+
+    const generateSquares = (nextDimensions) => {
+      const columns = Math.max(1, Math.floor(nextDimensions.width / width));
+      const rows = Math.max(1, Math.floor(nextDimensions.height / height));
+
       setSquares(
         Array.from({ length: numSquares }, (_, i) => ({
           id: i,
-          pos: [
-            Math.floor(Math.random() * (dimensions.width / width)),
-            Math.floor(Math.random() * (dimensions.height / height)),
-          ],
+          pos: [Math.floor(Math.random() * columns), Math.floor(Math.random() * rows)],
         }))
       );
-    }
-  }, [dimensions, numSquares, width, height]);
+    };
+
+    const syncDimensions = (nextDimensions) => {
+      dimensionsRef.current = nextDimensions;
+      generateSquares(nextDimensions);
+    };
+
+    const resizeObserver = new ResizeObserver(([entry]) => {
+      if (!entry) {
+        return;
+      }
+
+      syncDimensions({
+        width: entry.contentRect.width,
+        height: entry.contentRect.height,
+      });
+    });
+
+    const animationFrame = requestAnimationFrame(() => {
+      const rect = element.getBoundingClientRect();
+      syncDimensions({ width: rect.width, height: rect.height });
+    });
+
+    resizeObserver.observe(element);
+
+    return () => {
+      cancelAnimationFrame(animationFrame);
+      resizeObserver.unobserve(element);
+    };
+  }, [height, numSquares, width]);
 
   return (
     <svg
@@ -103,14 +114,15 @@ export default function AnimatedGridPattern({
             }}
             onUpdate={(latest) => {
               if (latest === 0) {
+                const dimensions = dimensionsRef.current;
+                const columns = Math.max(1, Math.floor(dimensions.width / width));
+                const rows = Math.max(1, Math.floor(dimensions.height / height));
+
                 setSquares((currentSquares) => {
                   const newSquares = [...currentSquares];
                   newSquares[index] = {
                     id,
-                    pos: [
-                      Math.floor(Math.random() * (dimensions.width / width)),
-                      Math.floor(Math.random() * (dimensions.height / height)),
-                    ],
+                    pos: [Math.floor(Math.random() * columns), Math.floor(Math.random() * rows)],
                   };
                   return newSquares;
                 });
